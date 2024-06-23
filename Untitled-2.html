@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHT22 Sensor Data</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #72EDF2 10%, #5151E5 100%);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .data {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .data-item {
+            margin: 1rem;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            font-size: 1.25rem;
+            margin: 0;
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-database-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaYXbLnxfJeIbessV8HzGu5KQPD5OuiNg",
+            authDomain: "projectdht-53922.firebaseapp.com",
+            databaseURL: "https://projectdht-53922-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "projectdht-53922",
+            storageBucket: "projectdht-53922.appspot.com",
+            messagingSenderId: "217816470431",
+            appId: "1:217816470431:web:89f46b80bcf132b328a3aa"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the database
+        const database = firebase.database();
+
+        // Function to update the HTML elements with the sensor data
+        function updateData(snapshot) {
+            const data = snapshot.val();
+            document.getElementById('temperature').innerText = `${data.temperature} °C`;
+            document.getElementById('humidity').innerText = `${data.humidity} %`;
+        }
+
+        // Attach a listener to the 'data' node in the database
+        database.ref('data').on('value', updateData);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>DHT22 Sensor Data</h1>
+        <div class="data">
+            <div class="data-item">
+                <h2>Temperature</h2>
+                <p id="temperature">-- °C</p>
+            </div>
+            <div class="data-item">
+                <h2>Humidity</h2>
+                <p id="humidity">-- %</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
